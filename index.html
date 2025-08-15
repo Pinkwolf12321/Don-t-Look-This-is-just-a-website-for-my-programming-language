@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LEWS Language</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>LEWS: Low-Latency Execution System</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="syntax.html">Syntax</a>
+            <a href="examples.html">Examples</a>
+            <a href="playground.html">Playground</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Welcome Section -->
+        <section>
+            <h2>Welcome to LEWS</h2>
+            <p>LEWS is a revolutionary programming language that merges <strong>Python's readability</strong> with the raw power and efficiency of <strong>assembly-level operations</strong>. Built for speed, precision, and functional elegance, LEWS is perfect for developers who want control without sacrificing clarity.</p>
+        </section>
+
+        <!-- Philosophy -->
+        <section>
+            <h2>Why LEWS?</h2>
+            <ul>
+                <li><strong>Speed & Efficiency:</strong> Designed for low-latency execution, perfect for high-performance applications.</li>
+                <li><strong>Functional Power:</strong> Functions are first-class citizens; functional programming meets low-level control.</li>
+                <li><strong>Readable & Powerful:</strong> Python-inspired syntax makes learning quick while keeping assembly-level access available.</li>
+                <li><strong>Chaos & Control:</strong> Spawn processes, manipulate memory, randomize execution, and wield full system power safely.</li>
+            </ul>
+        </section>
+
+        <!-- Features -->
+        <section>
+            <h2>Core Features</h2>
+            <div class="feature">
+                <h3>Variables & Memory</h3>
+                <p>Declare variables dynamically with <code>var</code> and manipulate memory slots with <code>mem[0]</code>.</p>
+            </div>
+            <div class="feature">
+                <h3>Functions</h3>
+                <p>Create single-line or multi-line functions with <code>fn</code>. Functional programming meets system-level operations.</p>
+            </div>
+            <div class="feature">
+                <h3>Process Spawning</h3>
+                <p>Launch apps, threads, or random processes instantly using <code>spawn(count)(apps)</code>.</p>
+            </div>
+            <div class="feature">
+                <h3>Loops & Conditionals</h3>
+                <p>Control flow is simple and clean. Use <code>loop</code> and <code>if/else</code> for precise execution.</p>
+            </div>
+            <div class="feature">
+                <h3>Random Utilities</h3>
+                <p>Use <code>RAN</code> to pick random values, integers, or select apps—perfect for testing or chaotic effects.</p>
+            </div>
+        </section>
+
+        <!-- Syntax Teaser -->
+        <section>
+            <h2>LEWS Syntax Teaser</h2>
+            <pre>
+recsrc RAN
+var x (42)
+mem[0] = x
+
+fn double(n) => n * 2
+var y (double(x))
+
+spawn (1) (chrome)
+spawn (3) (chrome, edge, firefox)
+spawn (y) (RAN)
+
+loop (5):
+    out "Iteration " + str(RAN.int(1,100))
+
+if y > 50:
+    out "Y is huge!"
+else:
+    out "Y is manageable"
+            </pre>
+            <p>That’s LEWS in action: powerful, low-latency code that’s still readable.</p>
+        </section>
+
+        <!-- Example Section -->
+        <section>
+            <h2>Try LEWS Today</h2>
+            <p>Head over to the <a href="playground.html">Playground</a> to run your first scripts. Manipulate memory, spawn processes, and explore chaos—all safely inside your browser.</p>
+        </section>
+
+        <!-- Philosophy / Closing -->
+        <section>
+            <h2>Join the Revolution</h2>
+            <p>LEWS isn’t just a language—it’s a mindset. If you crave precision, speed, and full control over execution, LEWS is the tool you’ve been waiting for. Write code that’s clean, readable, and devastatingly powerful.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 LEWS Language | Crafted for high-performance coders & chaos enthusiasts</p>
+    </footer>
+</body>
+</html>
