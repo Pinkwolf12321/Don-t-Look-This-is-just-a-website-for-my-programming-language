@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LEWS Examples</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>LEWS Examples</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="syntax.html">Syntax</a>
+            <a href="examples.html">Examples</a>
+            <a href="playground.html">Playground</a>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>Hello World</h2>
+            <pre>
+recsrc OS
+out "Hello LEWS!"
+            </pre>
+        </section>
+
+        <section>
+            <h2>Spawn Browsers</h2>
+            <pre>
+var x (3)
+spawn (x) (chrome, firefox, edge)
+            </pre>
+        </section>
+
+        <section>
+            <h2>Memory Operations</h2>
+            <pre>
+mem[0] = 42
+var y (mem[0] * 2)
+out y
+            </pre>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 LEWS Language</p>
+    </footer>
+</body>
+</html>
