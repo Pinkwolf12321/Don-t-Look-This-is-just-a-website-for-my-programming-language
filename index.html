@@ -3,657 +3,310 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>LEWS — Low-Latency Execution System</title>
+<title>Lovelace — Low-Latency Execution System</title>
 <style>
-  :root{
-    --bg:#0e0f12;
-    --bg2:#121319;
-    --panel:#161823;
-    --ink:#e7e8ec;
-    --muted:#9aa0ad;
-    --brand:#ff6a00;
-    --accent:#ffd166;
-    --ok:#25d366;
-    --warn:#ffb300;
-    --err:#ff4d4f;
-    --code:#0b0c10;
-    --line:#222533;
-    --chip:#1d2030;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0;
-    background:linear-gradient(180deg,var(--bg),var(--bg2));
-    color:var(--ink);
-    font:16px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
-  }
-  a{color:var(--accent);text-decoration:none}
-  a:hover{text-decoration:underline}
-  header{
-    position:sticky;top:0;z-index:5;
-    background:#0e0f12cc;backdrop-filter: blur(8px);
-    border-bottom:1px solid var(--line);
-  }
-  .wrap{max-width:1100px;margin:0 auto;padding:18px 18px}
-  .brand{display:flex;align-items:center;gap:14px}
-  .logo{
-    width:40px;height:40px;border-radius:10px;background:
-      conic-gradient(from 180deg,var(--brand),#ff2e63,var(--accent),var(--brand));
-    box-shadow:0 0 0 2px #ffffff0d inset,0 6px 20px #0008;
-  }
-  .brand h1{margin:0;font-size:20px;letter-spacing:0.4px}
-  .brand small{color:var(--muted)}
-  nav{
-    display:flex;gap:12px;flex-wrap:wrap;margin-top:10px
-  }
-  nav a{
-    padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--chip)
-  }
-  main .wrap{display:grid;grid-template-columns:280px 1fr;gap:24px}
-  @media (max-width: 980px){ main .wrap{grid-template-columns:1fr} }
-  .toc{
-    position:sticky;top:92px;align-self:start;border:1px solid var(--line);
-    background:var(--panel);border-radius:12px;padding:14px;max-height:calc(100vh - 110px);overflow:auto
-  }
-  .toc h3{margin:6px 0 10px;color:var(--muted);font-weight:600;font-size:13px;text-transform:uppercase}
-  .toc a{display:block;padding:6px 8px;border-radius:6px;color:#cfd2db}
-  .toc a:hover{background:#ffffff08}
-  section{
-    border:1px solid var(--line);background:var(--panel);
-    border-radius:14px;padding:18px;margin-bottom:22px
-  }
-  h2{margin:0 0 10px;font-size:22px}
-  h3{margin:16px 0 8px;font-size:16px;color:#d5d7df}
-  p{margin:8px 0;color:#cfd2db}
-  .chips{display:flex;flex-wrap:wrap;gap:8px}
-  .chip{background:var(--chip);border:1px solid var(--line);padding:6px 10px;border-radius:999px;color:#cfd2db;font-size:12px}
-  pre,code,kbd,samp{font-family:inherit}
-  pre{
-    margin:10px 0;background:var(--code);border:1px solid var(--line);border-radius:10px;padding:14px;overflow:auto
-  }
-  code{background:#ffffff10;border:1px solid var(--line);padding:2px 6px;border-radius:6px}
-  .grid{display:grid;gap:16px}
-  .cols-2{grid-template-columns:1fr 1fr}
-  @media (max-width: 980px){ .cols-2{grid-template-columns:1fr} }
-  .playground{
-    display:grid;gap:14px
-  }
-  textarea{
-    width:100%;min-height:280px;resize:vertical;border-radius:10px;
-    border:1px solid var(--line);background:#0a0c12;color:var(--ink);padding:12px
-  }
-  .toolbar{display:flex;gap:10px;flex-wrap:wrap}
-  .btn{
-    padding:10px 14px;border-radius:10px;border:1px solid var(--line);
-    background:var(--chip);color:#fff;cursor:pointer
-  }
-  .btn:hover{filter:brightness(1.1)}
-  .btn.primary{background:linear-gradient(180deg,#ff6a00,#ff2e63)}
-  .btn.ghost{background:transparent}
-  .status{color:var(--muted);font-size:12px}
-  .out{
-    background:#05060a;border:1px solid var(--line);border-radius:10px;padding:12px;min-height:140px;white-space:pre-wrap
-  }
-  .note{border-left:3px solid var(--accent);padding:8px 10px;background:#fff3; border-radius:8px}
-  .ok{color:var(--ok)} .warn{color:var(--warn)} .err{color:var(--err)}
-  footer{border-top:1px solid var(--line);color:#9097a6}
-  .kbd{padding:2px 6px;border:1px solid var(--line);border-radius:6px;background:#0005}
-  .table{width:100%;border-collapse:collapse}
-  .table th,.table td{border-bottom:1px dashed #ffffff13;padding:8px 6px;text-align:left}
-  .muted{color:var(--muted)}
+:root{
+  --bg:#0e0f12;
+  --bg2:#121319;
+  --panel:#161823;
+  --ink:#e7e8ec;
+  --muted:#9aa0ad;
+  --brand:#ff6a00;
+  --accent:#ffd166;
+  --ok:#25d366;
+  --warn:#ffb300;
+  --err:#ff4d4f;
+  --code:#0b0c10;
+  --line:#222533;
+  --chip:#1d2030;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:linear-gradient(180deg,var(--bg),var(--bg2));
+  color:var(--ink);
+  font:16px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+header{
+  position:sticky;
+  top:0;
+  z-index:5;
+  background:#0e0f12cc;
+  backdrop-filter: blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.wrap{max-width:1100px;margin:0 auto;padding:18px 18px}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{
+  width:40px;height:40px;border-radius:10px;
+  background: conic-gradient(from 180deg,var(--brand),#ff2e63,var(--accent),var(--brand));
+  box-shadow:0 0 0 2px #ffffff0d inset,0 6px 20px #0008;
+}
+.brand h1{margin:0;font-size:20px;letter-spacing:0.4px}
+.brand small{color:var(--muted)}
+nav{
+  display:flex;gap:12px;flex-wrap:wrap;margin-top:10px
+}
+nav a{
+  padding:8px 12px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:var(--chip)
+}
+main .wrap{display:grid;grid-template-columns:280px 1fr;gap:24px}
+@media (max-width: 980px){
+  main .wrap{grid-template-columns:1fr}
+}
+.toc{
+  position:sticky;
+  top:92px;
+  align-self:start;
+  border:1px solid var(--line);
+  background:var(--panel);
+  border-radius:12px;
+  padding:14px;
+  max-height:calc(100vh - 110px);
+  overflow:auto
+}
+.toc h3{margin:6px 0 10px;color:var(--muted);font-weight:600;font-size:13px;text-transform:uppercase}
+.toc a{display:block;padding:6px 8px;border-radius:6px;color:#cfd2db}
+.toc a:hover{background:#ffffff08}
+section{
+  border:1px solid var(--line);
+  background:var(--panel);
+  border-radius:14px;
+  padding:18px;
+  margin-bottom:22px
+}
+h2{margin:0 0 10px;font-size:22px}
+h3{margin:16px 0 8px;font-size:16px;color:#d5d7df}
+p{margin:8px 0;color:#cfd2db}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+  background:var(--chip);
+  border:1px solid var(--line);
+  padding:6px 10px;
+  border-radius:999px;
+  color:#cfd2db;
+  font-size:12px
+}
+pre,code,kbd,samp{font-family:inherit}
+pre{
+  margin:10px 0;
+  background:var(--code);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:14px;
+  overflow:auto
+}
+code{background:#ffffff10;border:1px solid var(--line);padding:2px 6px;border-radius:6px}
+.grid{display:grid;gap:16px}
+.cols-2{grid-template-columns:1fr 1fr}
+@media (max-width: 980px){
+  .cols-2{grid-template-columns:1fr}
+}
+.note{border-left:3px solid var(--accent);padding:8px 10px;background:#fff3; border-radius:8px}
+.ok{color:var(--ok)}
+.warn{color:var(--warn)}
+.err{color:var(--err)}
+footer{border-top:1px solid var(--line);color:#9097a6}
+.kbd{padding:2px 6px;border:1px solid var(--line);border-radius:6px;background:#0005}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border-bottom:1px dashed #ffffff13;padding:8px 6px;text-align:left}
+.muted{color:var(--muted)}
 </style>
 </head>
 <body>
 <header>
-  <div class="wrap">
-    <div class="brand">
-      <div class="logo" aria-hidden="true"></div>
-      <div>
-        <h1>LEWS <small>— Low-Latency Execution System</small></h1>
-        <div class="chips">
-          <span class="chip">Functional</span>
-          <span class="chip">Python-ease</span>
-          <span class="chip">Assembly-adjacent</span>
-          <span class="chip">Kernel-vibes</span>
-        </div>
-      </div>
-    </div>
-    <nav>
-      <a href="#intro">Intro</a>
-      <a href="#syntax">Syntax</a>
-      <a href="#stdlib">Stdlib</a>
-      <a href="#examples">Examples</a>
-      <a href="#playground">Playground</a>
-      <a href="#spec">Full Spec</a>
-      <a href="#faq">FAQ</a>
-    </nav>
-  </div>
+<div class="wrap">
+<div class="brand">
+<div class="logo" aria-hidden="true"></div>
+<div>
+<h1>Lovelace <small>— Low-Latency Execution System</small></h1>
+<div class="chips">
+<span class="chip">Functional</span>
+<span class="chip">Python-ease</span>
+<span class="chip">Assembly-adjacent</span>
+<span class="chip">Kernel-vibes</span>
+</div>
+</div>
+</div>
+<nav>
+<a href="#intro">Intro</a>
+<a href="#syntax">Syntax</a>
+<a href="#stdlib">Stdlib</a>
+<a href="#examples">Examples</a>
+<a href="#spec">Full Spec</a>
+<a href="#faq">FAQ</a>
+</nav>
+</div>
 </header>
-
 <main>
-  <div class="wrap">
-    <aside class="toc">
-      <h3>On this page</h3>
-      <a href="#intro">What is LEWS?</a>
-      <a href="#principles">Design Principles</a>
-      <a href="#syntax">Core Syntax</a>
-      <a href="#blocks">Blocks & Control Flow</a>
-      <a href="#memory">Memory</a>
-      <a href="#process">Spawning</a>
-      <a href="#stdlib">Standard Library</a>
-      <a href="#examples">Examples</a>
-      <a href="#playground">Interactive Playground</a>
-      <a href="#spec">Complete Language Spec</a>
-      <a href="#faq">FAQ</a>
-    </aside>
-
-    <div>
-
-      <section id="intro">
-        <h2>LEWS: Low-Latency Execution System</h2>
-        <p>
-          <strong>LEWS</strong> is a compact, readable language that blends
-          <em>Python’s clarity</em> with <em>assembly-flavored control</em>.
-          It’s designed to feel fast, direct, and powerful — like you’re
-          speaking straight to the machine without the usual ritual.
-        </p>
-        <div class="note">
-          TL;DR: you get <em>variables, functions, memory slots, loops, ifs, spawning apps</em> — all with crunchy, expressive syntax.
-        </div>
-      </section>
-
-      <section id="principles">
-        <h2>Design Principles</h2>
-        <ul>
-          <li><strong>Minimal surface area</strong>: just enough syntax to move.</li>
-          <li><strong>Low-latency feel</strong>: simple primitives, direct control.</li>
-          <li><strong>Functional first</strong>: one-liners, expressions, map-ish thinking.</li>
-          <li><strong>System-aware</strong>: <code>mem[]</code>, <code>spawn</code>, <code>sys.*</code> (simulated in browser).</li>
-          <li><strong>Readable under pressure</strong>: if you squint, you can guess what it does.</li>
-        </ul>
-      </section>
-
-      <section id="syntax">
-        <h2>Core Syntax</h2>
-
-        <h3>Comments</h3>
-        <pre>### Anything after ### is ignored</pre>
-
-        <h3>Imports</h3>
-        <pre>recsrc RAN         ### Random module
-recsrc OS          ### System ops (simulated in browser)
-recsrc FS          ### In-memory file system</pre>
-
-        <h3>Variables</h3>
-        <pre>var x (42)
+<div class="wrap">
+<aside class="toc">
+<h3>On this page</h3>
+<a href="#intro">What is Lovelace?</a>
+<a href="#principles">Design Principles</a>
+<a href="#syntax">Core Syntax</a>
+<a href="#blocks">Blocks & Control Flow</a>
+<a href="#memory">Memory</a>
+<a href="#process">Spawning</a>
+<a href="#stdlib">Standard Library</a>
+<a href="#examples">Examples</a>
+<a href="#spec">Complete Language Spec</a>
+<a href="#faq">FAQ</a>
+</aside>
+<div>
+<section id="intro">
+<h2>Lovelace: Low-Latency Execution System</h2>
+<p>
+<strong>Lovelace</strong> is a compact, readable language that blends <em>Python’s clarity</em> with <em>assembly-flavored control</em>. It’s designed to feel fast, direct, and powerful — like you’re speaking straight to the machine without the usual ritual.
+</p>
+<div class="note">
+TL;DR: you get <em>variables, functions, memory slots, loops, ifs, spawning apps</em> — all with crunchy, expressive syntax.
+</div>
+</section>
+<section id="principles">
+<h2>Design Principles</h2>
+<ul>
+<li><strong>Minimal surface area</strong>: just enough syntax to move.</li>
+<li><strong>Low-latency feel</strong>: simple primitives, direct control.</li>
+<li><strong>Functional first</strong>: one-liners, expressions, map-ish thinking.</li>
+<li><strong>System-aware</strong>: <code>mem[]</code>, <code>spawn</code>, <code>sys.*</code>.</li>
+<li><strong>Readable under pressure</strong>: if you squint, you can guess what it does.</li>
+</ul>
+</section>
+<section id="syntax">
+<h2>Core Syntax</h2>
+<h3>Comments</h3>
+<pre>### Anything after ### is ignored</pre>
+<h3>Imports</h3>
+<pre>recsrc RAN ### Random module
+recsrc OS ### System ops
+recsrc FS ### File system</pre>
+<h3>Variables</h3>
+<pre>var x (42)
 var name ("Blyth")
 var nums ([1,2,3])</pre>
-
-        <h3>Functions</h3>
-        <pre>fn double(n) => n * 2
-
-fn sum(a,b):
-    var r (a + b)
-    return r
-end</pre>
-
-        <h3 id="blocks">Blocks & Control Flow</h3>
-        <pre>if (x > 10):
-    out "big"
-elif (x == 10):
-    out "exact"
-else:
-    out "small"
-end
-
-loop (5):
-    out "tick"
-end
-
-loop nums:
-    out item        ### 'item' is each element
-end</pre>
-
-        <h3 id="memory">Memory</h3>
-        <pre>mem[0] = 99
-var y (mem[0] * 2)</pre>
-
-        <h3 id="process">Spawning</h3>
-        <pre>spawn (1) (chrome)
-spawn (3) (chrome, edge, firefox)
-var k (5)
-spawn (k) (RAN)     ### choose random apps 'k' times</pre>
-
-        <h3>Output</h3>
-        <pre>out "Hello LEWS"
-out x</pre>
-
-        <h3>Utilities</h3>
-        <pre>sleep(1.5)          ### seconds (simulated delay)
-write("log.txt", "hey")
-var txt (read("log.txt"))
-out txt</pre>
-      </section>
-
-      <section id="stdlib">
-        <h2>Standard Library (Built-ins)</h2>
-        <table class="table">
-          <tr><th>Module / Fn</th><th>Signature</th><th>Description</th></tr>
-          <tr><td><code>RAN.int(a,b)</code></td><td>int, int → int</td><td>Random int inclusive.</td></tr>
-          <tr><td><code>RAN.pick(arr)</code></td><td>array → any</td><td>Random element.</td></tr>
-          <tr><td><code>OS.env</code></td><td>object</td><td>Environment map (simulated).</td></tr>
-          <tr><td><code>sys.exec(cmd)</code></td><td>string → void</td><td>Exec process (simulated here).</td></tr>
-          <tr><td><code>sleep(n)</code></td><td>seconds → void</td><td>Async delay.</td></tr>
-          <tr><td><code>write(path, text)</code></td><td>string,string → void</td><td>Write to VFS.</td></tr>
-          <tr><td><code>read(path)</code></td><td>string → string</td><td>Read from VFS.</td></tr>
-          <tr><td><code>str(x)</code></td><td>any → string</td><td>Stringify.</td></tr>
-          <tr><td><code>int(x)</code></td><td>any → int</td><td>Integer parse/trunc.</td></tr>
-          <tr><td><code>num(x)</code></td><td>any → number</td><td>Number conversion.</td></tr>
-          <tr><td><code>bool(x)</code></td><td>any → bool</td><td>Boolean conversion.</td></tr>
-        </table>
-      </section>
-
-      <section id="examples">
-        <h2>Examples</h2>
-        <div class="grid cols-2">
-          <div>
-            <h3>Hello + Memory</h3>
-<pre>### Hello LEWS + memory demo
-out "Hello LEWS!"
-mem[0] = 21
-var x (mem[0] * 2)
-out x</pre>
-          </div>
-          <div>
-            <h3>Functions + Loop</h3>
+<h3>Functions</h3>
 <pre>fn double(n) => n * 2
-var total (0)
-
-loop (5):
-    var t (double(3))
-    out t
-end</pre>
-          </div>
-          <div>
-            <h3>Spawn (simulated)</h3>
-<pre>recsrc RAN
-spawn (1) (chrome)
+fn sum(a,b): var r (a + b) return r end</pre>
+<h3 id="blocks">Blocks & Control Flow</h3>
+<pre>if (x > 10): out "big"
+elif (x == 10): out "exact"
+else: out "small"
+end
+loop (5): out "tick" end
+loop nums: out item ### 'item' is each element end</pre>
+<h3 id="memory">Memory</h3>
+<pre>mem[0] = 99
+var y (mem[0] * 2)</pre>
+<h3 id="process">Spawning</h3>
+<pre>spawn (1) (chrome)
 spawn (3) (chrome, edge, firefox)
 var k (5)
 spawn (k) (RAN)</pre>
-          </div>
-          <div>
-            <h3>Files + Sleep</h3>
+<h3>Output</h3>
+<pre>out "Hello Lovelace"
+out x</pre>
+<h3>Utilities</h3>
+<pre>sleep(1.5)
+write("log.txt", "hey")
+var txt (read("log.txt"))
+out txt</pre>
+</section>
+<section id="stdlib">
+<h2>Standard Library (Built-ins)</h2>
+<table class="table">
+<tr><th>Module / Fn</th><th>Signature</th><th>Description</th></tr>
+<tr><td><code>RAN.int(a,b)</code></td><td>int, int → int</td><td>Random int inclusive.</td></tr>
+<tr><td><code>RAN.pick(arr)</code></td><td>array → any</td><td>Random element.</td></tr>
+<tr><td><code>OS.env</code></td><td>object</td><td>Environment map.</td></tr>
+<tr><td><code>sys.exec(cmd)</code></td><td>string → void</td><td>Exec process.</td></tr>
+<tr><td><code>sleep(n)</code></td><td>seconds → void</td><td>Delay execution.</td></tr>
+<tr><td><code>write(path, text)</code></td><td>string,string → void</td><td>Write to file.</td></tr>
+<tr><td><code>read(path)</code></td><td>string → string</td><td>Read from file.</td></tr>
+<tr><td><code>str(x)</code></td><td>any → string</td><td>Stringify.</td></tr>
+<tr><td><code>int(x)</code></td><td>any → int</td><td>Integer parse/trunc.</td></tr>
+<tr><td><code>num(x)</code></td><td>any → number</td><td>Number conversion.</td></tr>
+<tr><td><code>bool(x)</code></td><td>any → bool</td><td>Boolean conversion.</td></tr>
+</table>
+</section>
+<section id="examples">
+<h2>Examples</h2>
+<div class="grid cols-2">
+<div>
+<h3>Hello + Memory</h3>
+<pre>out "Hello Lovelace!"
+mem[0] = 21
+var x (mem[0] * 2)
+out x</pre>
+</div>
+<div>
+<h3>Functions + Loop</h3>
+<pre>fn double(n) => n * 2
+var total (0)
+loop (5): var t (double(3)) out t end</pre>
+</div>
+<div>
+<h3>Spawn</h3>
+<pre>spawn (1) (chrome)
+spawn (3) (chrome, edge, firefox)
+var k (5)
+spawn (k) (RAN)</pre>
+</div>
+<div>
+<h3>Files + Sleep</h3>
 <pre>write("note.txt", "ping")
 sleep(0.2)
 var s (read("note.txt"))
 out "got: " + s</pre>
-          </div>
-        </div>
-      </section>
-
-      <section id="playground">
-        <h2>Interactive Playground</h2>
-        <p class="muted">This runs a LEWS→JS translator in your browser. Spawning / system calls are simulated for safety.</p>
-
-        <div class="playground">
-          <div class="toolbar">
-            <button class="btn primary" id="runBtn">Run ▶</button>
-            <button class="btn" id="fmtBtn">Format</button>
-            <button class="btn ghost" id="sampleBtn">Load Sample</button>
-            <span class="status" id="status">idle</span>
-          </div>
-          <textarea id="codeInput" spellcheck="false"></textarea>
-          <div class="out" id="output" aria-live="polite"></div>
-        </div>
-      </section>
-
-      <section id="spec">
-        <h2>Complete Language Spec (v0.1)</h2>
-        <h3>Lexical</h3>
-        <ul>
-          <li>Identifiers: <code>[A-Za-z_][A-Za-z0-9_]*</code></li>
-          <li>Numbers: decimal floats/ints (JS semantics in playground)</li>
-          <li>Strings: double quotes <code>"like this"</code></li>
-          <li>Comments: <code>###</code> to end of line</li>
-        </ul>
-
-        <h3>Statements</h3>
-        <table class="table">
-          <tr><th>Form</th><th>Meaning</th></tr>
-          <tr><td><code>recsrc NAME</code></td><td>Import std module (RAN, OS, FS) — no-op beyond enabling features.</td></tr>
-          <tr><td><code>var id (expr)</code></td><td>Declare variable with expression value.</td></tr>
-          <tr><td><code>mem[idx] = expr</code></td><td>Write memory slot.</td></tr>
-          <tr><td><code>out expr</code></td><td>Print to console.</td></tr>
-          <tr><td><code>spawn (count) (list)</code></td><td>Simulated process spawn.</td></tr>
-          <tr><td><code>if/elif/else ... end</code></td><td>Conditional blocks.</td></tr>
-          <tr><td><code>loop (N) ... end</code></td><td>Counted loop.</td></tr>
-          <tr><td><code>loop arr: ... end</code></td><td>Foreach loop over array var.</td></tr>
-          <tr><td><code>fn name(args) =&gt; expr</code></td><td>Expression function.</td></tr>
-          <tr><td><code>fn name(args): ... end</code></td><td>Block function; use <code>return expr</code>.</td></tr>
-        </table>
-
-        <h3>Expressions</h3>
-        <p>Arithmetic <code>+ - * / %</code>, comparison <code>&lt; &lt;= &gt; &gt;= == !=</code>, logical <code>&amp;&amp; || !</code>, array literals <code>[...]</code>, memory reads <code>mem[i]</code>, function calls.</p>
-
-        <h3>Runtime (Playground)</h3>
-        <ul>
-          <li>Memory: <code>mem</code> is a JS array (<code>MEM</code> under the hood).</li>
-          <li>Filesystem: in-memory map, cleared each run.</li>
-          <li>sleep: asynchronous; code runs in an async function so <code>sleep()</code> actually waits.</li>
-          <li>Security: <em>no real process spawning</em>; it’s simulated via output.</li>
-        </ul>
-      </section>
-
-      <section id="faq">
-        <h2>FAQ</h2>
-        <h3>Can LEWS open apps for real?</h3>
-        <p>Not in the browser playground (sandbox). A native interpreter could wire <code>spawn</code> to your OS.</p>
-        <h3>Is this Python?</h3>
-        <p>No — it’s its own syntax. But it borrows Python’s readability and feels low-level like assembly.</p>
-        <h3>Why explicit <code>end</code> instead of indentation?</h3>
-        <p>Easier parsing, clearer blocks, fewer indentation footguns. You’re welcome.</p>
-      </section>
-
-      <footer class="wrap" style="margin:0;padding:18px 0">
-        <p>© 2025 LEWS. Made for speed. Handle with care.</p>
-      </footer>
-
-    </div>
-  </div>
+</div>
+</div>
+</section>
+<section id="spec">
+<h2>Complete Language Spec (v0.1)</h2>
+<h3>Lexical</h3>
+<ul>
+<li>Identifiers: <code>[A-Za-z_][A-Za-z0-9_]*</code></li>
+<li>Numbers: decimal floats/ints</li>
+<li>Strings: double quotes <code>"like this"</code></li>
+<li>Comments: <code>###</code> to end of line</li>
+</ul>
+<h3>Statements</h3>
+<table class="table">
+<tr><th>Form</th><th>Meaning</th></tr>
+<tr><td><code>recsrc NAME</code></td><td>Import module (RAN, OS, FS).</td></tr>
+<tr><td><code>var id (expr)</code></td><td>Declare variable with expression value.</td></tr>
+<tr><td><code>mem[idx] = expr</code></td><td>Write memory slot.</td></tr>
+<tr><td><code>out expr</code></td><td>Print to console.</td></tr>
+<tr><td><code>spawn (count) (list)</code></td><td>Spawn processes.</td></tr>
+<tr><td><code>if/elif/else ... end</code></td><td>Conditional blocks.</td></tr>
+<tr><td><code>loop (N) ... end</code></td><td>Counted loop.</td></tr>
+<tr><td><code>loop arr: ... end</code></td><td>Foreach loop over array.</td></tr>
+<tr><td><code>fn name(args) =&gt; expr</code></td><td>Expression function.</td></tr>
+<tr><td><code>fn name(args): ... end</code></td><td>Block function; use <code>return expr</code>.</td></tr>
+</table>
+<h3>Expressions</h3>
+<p>Arithmetic <code>+ - * / %</code>, comparison <code>&lt; &lt;= &gt; &gt;= == !=</code>, logical <code>&amp;&amp; || !</code>, array literals <code>[...]</code>, memory reads <code>mem[i]</code>, function calls.</p>
+</section>
+<section id="faq">
+<h2>FAQ</h2>
+<h3>Can Lovelace open apps for real?</h3>
+<p>Yes, when implemented natively. No sandbox needed.</p>
+<h3>Is this Python?</h3>
+<p>No — it’s its own syntax, but Python-inspired for readability.</p>
+<h3>Why explicit <code>end</code> instead of indentation?</h3>
+<p>Easier parsing, clearer blocks, fewer indentation mistakes.</p>
+</section>
+<footer class="wrap" style="margin:0;padding:18px 0">
+<p>© 2025 Lovelace. Made for speed. Handle with care.</p>
+</footer>
+</div>
+</div>
 </main>
-
-<script>
-/* ===============================
-   LEWS Playground Interpreter v0.1
-   (Blyth’s “Python + Assembly” baby energy)
-   =============================== */
-
-const defaultSample = `### LEWS demo
-recsrc RAN
-recsrc FS
-out "Hello, LEWS!"
-
-mem[0] = 21
-var x (mem[0] * 2)
-out "x = " + str(x)
-
-fn double(n) => n * 2
-out "double(10) = " + str(double(10))
-
-if (x > 30):
-    out "x is spicy"
-elif (x == 42):
-    out "x is perfect"
-else:
-    out "x is fine"
-end
-
-loop (3):
-    out "tick"
-end
-
-var arr ([1,2,3,4])
-loop arr:
-    out "item: " + str(item)
-end
-
-spawn (1) (chrome)
-spawn (3) (chrome, edge, firefox)
-spawn (5) (RAN)
-
-write("log.txt", "ping")
-sleep(0.2)
-out "file: " + read("log.txt")
-`;
-
-const outEl = document.getElementById('output');
-const codeEl = document.getElementById('codeInput');
-const statusEl = document.getElementById('status');
-
-document.getElementById('sampleBtn').addEventListener('click', () => {
-  codeEl.value = defaultSample;
-  outEl.textContent = 'Loaded sample.';
-});
-document.getElementById('fmtBtn').addEventListener('click', () => {
-  codeEl.value = formatLEWS(codeEl.value);
-});
-document.getElementById('runBtn').addEventListener('click', async () => {
-  outEl.textContent = '';
-  status('running…');
-  try{
-    const res = await runLEWS(codeEl.value);
-    status('done');
-  }catch(err){
-    status('error');
-    printErr(err);
-  }
-});
-
-function status(s){ statusEl.textContent = s; }
-function print(s){ outEl.textContent += s + "\\n"; }
-function printWarn(s){ outEl.innerHTML += '<span class="warn">'+escapeHtml(s)+'</span>\\n'; }
-function printErr(e){ outEl.innerHTML += '<span class="err">'+escapeHtml(String(e))+'</span>\\n'; }
-function escapeHtml(s){ return String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
-
-/* -------- Formatter (very light) -------- */
-function formatLEWS(src){
-  // strip trailing spaces, normalize indentation for blocks (2 spaces)
-  const lines = src.split(/\\r?\\n/);
-  const stack = [];
-  let ind = 0;
-  const openers = /^(if\\s*\\(|elif\\s*\\(|else:|loop\\s*\\(|loop\\s+\\w+:|fn\\s+\\w+\\([^)]*\\):)\\s*$/;
-  return lines.map(line=>{
-    let raw=line.replace(/\\s+$/,'');
-    const noCom = raw.split('###')[0]; // for indentation, ignore comments
-    const trimmed = noCom.trim();
-    if(/^end\\s*$/.test(trimmed)){ ind = Math.max(0, ind-1); }
-    const prefix = '  '.repeat(ind);
-    let out = prefix + raw.trim();
-    if(openers.test(trimmed)) ind++;
-    return out;
-  }).join('\\n');
-}
-
-/* -------- Translator: LEWS -> JS -------- */
-function translateLEWS(src){
-  // Remove BOM & normalize newlines
-  src = src.replace(/^\\uFEFF/,'').replace(/\\r\\n?/g,'\\n');
-
-  const lines = src.split('\\n');
-  let js = [];
-  let openBlocks = 0;
-
-  // header scaffolding
-  js.push(`"use strict";`);
-  js.push(`return (async () => {`);
-  js.push(`  const OUT = (x)=>{ __OUT(String(x)); };`);
-  js.push(`  const SLEEP = (s)=> new Promise(r=>setTimeout(r, Math.max(0, s*1000)));`);
-  js.push(`  let MEM = [];`);
-  js.push(`  let VFS = Object.create(null);`);
-  js.push(`  const OS = { env: { USER:"lews", SHELL:"/bin/lews", PLATFORM: navigator.platform || "web" } };`);
-  js.push(`  const sys = { exec:(cmd)=>{ __OUT("[sys.exec] "+cmd+" (simulated)"); } };`);
-  js.push(`  const RAN = { int:(a,b)=>{ a=Number(a); b=Number(b); if(b<a) [a,b]=[b,a]; return Math.floor(Math.random()*(b-a+1))+a; }, pick:(arr)=> arr[Math.floor(Math.random()*arr.length)] };`);
-  js.push(`  const write=(p,t)=>{ VFS[p]=String(t); };`);
-  js.push(`  const read=(p)=> VFS[p] ?? "";`);
-  js.push(`  const str=(x)=> String(x);`);
-  js.push(`  const int=(x)=> { const n = Number(x); return Number.isNaN(n)?0: (n<0?Math.ceil(n):Math.floor(n)); };`);
-  js.push(`  const num=(x)=> Number(x);`);
-  js.push(`  const bool=(x)=> Boolean(x);`);
-  js.push(`  const __APPS = ["chrome","edge","firefox","safari","opera","notepad","calc","vscode","terminal"];`);
-  js.push(`  const __spawn = (count, list) => {`);
-  js.push(`    for(let i=0;i<count;i++){`);
-  js.push(`      const app = list==="RAN" ? RAN.pick(__APPS) : RAN.pick(list);`);
-  js.push(`      __OUT("[spawn] "+app+" (simulated)");`);
-  js.push(`    }`);
-  js.push(`  };`);
-
-  const push = line => js.push(line);
-
-  function closeBlock(){
-    push(`}`);
-    openBlocks--;
-  }
-
-  for(let i=0;i<lines.length;i++){
-    let raw = lines[i];
-    let line = raw.replace(/\\t/g,'    ');
-    // strip comments
-    line = line.replace(/###.*$/,'').trim();
-    if(!line){ continue; }
-
-    // end
-    if(/^end\\s*$/.test(line)){ closeBlock(); continue; }
-
-    // recsrc
-    let m;
-    if((m = line.match(/^recsrc\\s+(\\w+)\\s*$/))){
-      const mod = m[1];
-      push(`/* recsrc ${mod} */`);
-      continue;
-    }
-
-    // var
-    if((m = line.match(/^var\\s+([A-Za-z_][A-Za-z0-9_]*)\\s*\\((.+)\\)\\s*$/))){
-      push(`let ${m[1]} = (${m[2]});`);
-      continue;
-    }
-
-    // mem[...] = expr
-    if((m = line.match(/^mem\\[(.+?)\\]\\s*=\\s*(.+)$/))){
-      push(`MEM[(${m[1]})] = (${m[2]});`);
-      continue;
-    }
-
-    // out expr
-    if((m = line.match(/^out\\s+(.+)$/))){
-      push(`OUT((${m[1]}));`);
-      continue;
-    }
-
-    // spawn (count) (list)
-    if((m = line.match(/^spawn\\s*\\((.+)\\)\\s*\\((.+)\\)\\s*$/))){
-      const count = m[1].trim();
-      let lst = m[2].trim();
-      if(/^RAN$/i.test(lst)){
-        push(`__spawn((${count}), "RAN");`);
-      }else{
-        // split names by comma -> array of strings
-        const names = lst.split(',').map(s=>s.trim()).filter(Boolean).map(s=>JSON.stringify(s));
-        push(`__spawn((${count}), [${names.join(',')}]);`);
-      }
-      continue;
-    }
-
-    // sleep(seconds)
-    if((m = line.match(/^sleep\\((.+)\\)\\s*$/))){
-      push(`await SLEEP((${m[1]}));`);
-      continue;
-    }
-
-    // if / elif / else
-    if((m = line.match(/^if\\s*\\((.+)\\):\\s*$/))){
-      push(`if ((${m[1]})) {`); openBlocks++; continue;
-    }
-    if((m = line.match(/^elif\\s*\\((.+)\\):\\s*$/))){
-      push(`} else if ((${m[1]})) {`); continue;
-    }
-    if(/^else:\\s*$/.test(line)){
-      push(`} else {`); continue;
-    }
-
-    // loop (N):
-    if((m = line.match(/^loop\\s*\\((.+)\\):\\s*$/))){
-      const uid = "__i" + i;
-      push(`for (let ${uid}=0; ${uid}<(${m[1]}); ${uid}++){`); openBlocks++; continue;
-    }
-
-    // loop arr:
-    if((m = line.match(/^loop\\s+([A-Za-z_][A-Za-z0-9_]*):\\s*$/))){
-      const arr = m[1];
-      push(`for (const item of (${arr})) {`); openBlocks++; continue;
-    }
-
-    // fn name(args) => expr
-    if((m = line.match(/^fn\\s+([A-Za-z_][A-Za-z0-9_]*)\\s*\\(([^)]*)\\)\\s*=>\\s*(.+)$/))){
-      const name = m[1], args = m[2], expr = m[3];
-      push(`function ${name}(${args}){ return (${expr}); }`);
-      continue;
-    }
-
-    // fn name(args):
-    if((m = line.match(/^fn\\s+([A-Za-z_][A-Za-z0-9_]*)\\s*\\(([^)]*)\\):\\s*$/))){
-      const name = m[1], args = m[2];
-      push(`function ${name}(${args}){`); openBlocks++; continue;
-    }
-
-    // return expr
-    if((m = line.match(/^return\\s+(.+)$/))){
-      push(`return (${m[1]});`); continue;
-    }
-
-    // write/read/sys.exec direct passthroughs to helpers
-    if((m = line.match(/^write\\((.+)\\)\\s*$/))){
-      push(`write(${m[1]});`); continue;
-    }
-    if((m = line.match(/^read\\((.+)\\)\\s*$/))){
-      // allow standalone read call (no-op) — usually used inside var/out
-      push(`read(${m[1]});`); continue;
-    }
-    if((m = line.match(/^sys\\.exec\\((.+)\\)\\s*$/))){
-      push(`sys.exec(${m[1]});`); continue;
-    }
-
-    // Fallback: allow bare expressions (e.g., function calls)
-    if(/^[A-Za-z_]/.test(line)){
-      // treat as expression statement (e.g., foo(1,2))
-      push(`(${line});`);
-      continue;
-    }
-
-    throw new Error("Unrecognized syntax on line "+(i+1)+": "+raw);
-  }
-
-  // close all unclosed blocks
-  while(openBlocks>0){ closeBlock(); }
-
-  js.push(`})();`);
-  return js.join('\\n');
-}
-
-/* -------- Runner -------- */
-async function runLEWS(src){
-  // Provide __OUT sink into this closure
-  const __OUT = (s)=> print(s);
-
-  // Translate to JS
-  let program = '';
-  try{
-    program = translateLEWS(src);
-  }catch(e){
-    printErr(e);
-    throw e;
-  }
-
-  // Debug hook (uncomment to see generated JS)
-  // console.log(program);
-
-  // Async function factory with __OUT in scope
-  const AsyncFn = Object.getPrototypeOf(async function(){}).constructor;
-  try{
-    const runner = new AsyncFn('__OUT', program);
-    await runner(__OUT);
-  }catch(e){
-    printErr(e.stack || e);
-    throw e;
-  }
-}
-
-/* Put a friendly starter in the editor */
-codeEl.value = defaultSample;
-outEl.textContent = "Ready. Click Run ▶";
-
-</script>
 </body>
 </html>
